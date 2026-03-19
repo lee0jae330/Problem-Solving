@@ -13,20 +13,32 @@ int main(){
         int a, b;
         cin >> a >> b;
 
-        int inner;
-        if(a<=b) {
-            inner = b - a;
-        } else {
-            inner = b - a +43;
+        int inner = 0, outer = 0;
+
+        int i = a;
+        while(i!=b) {
+            i++;
+            if(i > 243) {
+                i = 201;
+            }
+            inner++;
         }
-        int outer = 43 - inner;
+
+        i = a;
+        while(i!=b) {
+            i--;
+            if(i < 201) {
+                i =243;
+            }
+            outer++;
+        }
 
         if(inner < outer) {
-            cout << "Inner circle line" <<'\n';
-        } else if (inner  > outer) {
-            cout << "Outer circle line" <<'\n';
+            cout << "Inner circle line"<<'\n';            
+        } else if(inner>outer) {
+            cout << "Outer circle line"<<'\n';
         } else {
-            cout << "Same" <<'\n';
+            cout << "Same" << '\n';
         }
     }
 
