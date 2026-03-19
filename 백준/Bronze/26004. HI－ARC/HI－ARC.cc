@@ -20,11 +20,7 @@ int main() {
             continue;
         }
         
-        if(m.find(c) == m.end()) {
-            m[c] = 1;
-        } else {
-            m[c]++;
-        }
+        m[c]++;
     }
 
     int mn = 100001;
