@@ -1,111 +1,60 @@
-#include<iostream>
-#include<stack>
-#include<algorithm>
-#include<vector>
-#include<utility>
-#include<tuple>
-
-using namespace std;
+#include <bits/stdc++.h>
 
 typedef long long ll;
 
-vector<int>v;
-vector<int>l;
-vector<int>r;
+using namespace std;
+
+vector<int> v;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-	while (1) {
-		v.clear();
-		l.clear();
-		r.clear();
+    while (1) {
+        int N;
+        cin >> N;
+        if (!N) {
+            return 0;
+        }
+        v.resize(N);
+        stack<pair<int, int>> s;
+        for (int i = 0; i < N; i++) {
+            cin >> v[i];
+        }
 
-		int N;
-		cin >> N;
-		while (!N) {
-			return 0;
-		}
-		
-		v.resize(N);
-		l.resize(N);
-		r.resize(N);
+        s.emplace(v[0], 1);
+        ll sol = 0;
 
-		for (int i = 0; i < N; i++) {
-			cin >> v[i];
-		}
+        for (int i = 1; i < N; i++) {
+            ll cnt = 0;
+            while (1) {
+                if (s.empty()) {
+                    s.emplace(v[i], cnt + 1);
+                    break;
+                }
 
-		ll sol = -1;
-		
-		stack<tuple<int,int,int>>s;
+                auto [value, num] = s.top();
 
-		for (int i = 0; i < N; i++) {
-			if (s.empty()) {
-				s.push({v[i], i, 0});
-				continue;
-			}
-			
-			if (get<0>(s.top()) >= v[i]) {
-				int cnt = 0;
-				while (!s.empty()) {
-					auto [t, idx, c] = s.top();
-					if (t < v[i]) {
-						break;
-					}
-					cnt += c + 1;
-					l[idx] = c;
-					s.pop();
-				}
-				s.push({v[i], i, cnt});
-			}
-			else {
-				s.push({v[i], i, 0});
-			}
-		}
+                if (value < v[i]) {
+                    s.emplace(v[i], cnt + 1);
+                    break;
+                } else {
+                    cnt += num;
+                    sol = max(sol, value * cnt);
+                    s.pop();
+                }
+            }
+        }
 
-		while (!s.empty()) {
-			auto [t, idx, c] = s.top();
-			l[idx] = c;
-			s.pop();
-		}
+        ll prevCnt = 0;
+        while (!s.empty()) {
+            auto [value, num] = s.top();
+            prevCnt += num;
+            sol = max(sol, prevCnt * value);
+            s.pop();
+        }
 
-		for (int i = N-1; i >=0; i--) {
-			if (s.empty()) {
-				s.push({ v[i], i, 0 });
-				continue;
-			}
-
-			if (get<0>(s.top()) >= v[i]) {
-				int cnt = 0;
-				while (!s.empty()) {
-					auto [t, idx, c] = s.top();
-					if (t < v[i]) {
-						break;
-					}
-					cnt += (c + 1);
-					r[idx] = c;
-					s.pop();
-				}
-				s.push({ v[i], i, cnt });
-			}
-			else {
-				s.push({ v[i], i, 0 });
-			}
-		}
-
-		while (!s.empty()) {
-			auto [t, idx, c] = s.top();
-			r[idx] = c;
-			s.pop();
-		}
-
-		for (int i = 0; i < N; i++) {
-			ll cnt = l[i] + r[i] +1;
-			sol = max(sol, cnt * v[i]);
-		}
-
-		cout << sol <<'\n';
-	}
+        cout << sol << '\n';
+    }
 }
