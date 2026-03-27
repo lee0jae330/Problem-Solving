@@ -1,66 +1,49 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<stdio.h>
-#include<queue>
-#include<algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
+int N, M;
 char arr[101][101];
 int visited[101][101];
-int dist[101][101];
-queue<pair<int, int>>q;
-int x = 0, y = 0;
-int N, M;
 
-void bfs()
-{
-	q.push({ 0,0 });
-	visited[0][0] = 1;
-	dist[0][0] = 1;
-	while (!q.empty())
-	{
-		int x_tmp = q.front().first;
-		int y_tmp = q.front().second;
-		q.pop();
-		if (x_tmp + 1 < N && !visited[x_tmp + 1][y_tmp] && arr[x_tmp+1][y_tmp] == '1')
-		{
-			q.push({ x_tmp + 1,y_tmp });
-			visited[x_tmp + 1][y_tmp] = 1;
-			dist[x_tmp + 1][y_tmp] = dist[x_tmp][y_tmp] + 1;
-		}
-		if (x_tmp - 1 >= 0 && !visited[x_tmp - 1][y_tmp] && arr[x_tmp - 1][y_tmp] == '1')
-		{
-			q.push({ x_tmp - 1,y_tmp });
-			visited[x_tmp - 1][y_tmp] = 1;
-			dist[x_tmp - 1][y_tmp] = dist[x_tmp][y_tmp] + 1;
-		}
-		if (y_tmp + 1 < M && !visited[x_tmp][y_tmp + 1] && arr[x_tmp][y_tmp + 1] == '1')
-		{
-			q.push({ x_tmp,y_tmp+1 });
-			visited[x_tmp][y_tmp+1] = 1;
-			dist[x_tmp][y_tmp+1] = dist[x_tmp][y_tmp] + 1;
-		}
-		if (y_tmp - 1 >= 0 && !visited[x_tmp][y_tmp - 1] && arr[x_tmp][y_tmp - 1] == '1')
-		{
-			q.push({ x_tmp,y_tmp - 1 });
-			visited[x_tmp][y_tmp - 1] = 1;
-			dist[x_tmp][y_tmp - 1] = dist[x_tmp][y_tmp]+ 1;
-		}
-	}
+int xx[4] = {0, 1, 0, -1};
+int yy[4] = {1, 0, -1, 0};
 
+void bfs(int x, int y) {
+    visited[x][y] = 1;
+    queue<pair<int, int>> q;
+    q.emplace(x, y);
+    while (!q.empty()) {
+        tie(x, y) = q.front();
+        q.pop();
+
+        for (int i = 0; i < 4; i++) {
+            int tx = x + xx[i], ty = y + yy[i];
+
+            if (tx < 0 || ty < 0 || tx >= N || ty >= M || visited[tx][ty] || arr[tx][ty] == '0') {
+                continue;
+            }
+
+            visited[tx][ty] = visited[x][y] + 1;
+            q.emplace(tx, ty);
+        }
+    }
 }
 
-int main(void)
-{
-	scanf("%d %d", &N, &M);
-	getchar();
-	for (int i = 0; i < N; i++)
-	{
-		for (int j = 0; j < M; j++)
-			scanf("%c", &arr[i][j]);
-		getchar();
-	}
-	bfs();
-	printf("%d\n", dist[N-1][M-1]);
-	return 0;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    cin >> N >> M;
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            cin >> arr[i][j];
+        }
+    }
+
+    bfs(0, 0);
+    cout << visited[N - 1][M - 1] << '\n';
+    return 0;
 }
