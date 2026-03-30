@@ -31,7 +31,7 @@ void bfs(int x, int y) {
             if (arr[tx][ty] == '0' && !visited[tx][ty][cnt]) {
                 visited[tx][ty][cnt] = visited[x][y][cnt] + 1;
                 q.emplace(tx, ty, cnt);
-            } else if (cnt + 1 <= K && (!visited[tx][ty][cnt + 1] || visited[tx][ty][cnt + 1] > visited[x][y][cnt] + 1)) {
+            } else if (cnt + 1 <= K && !visited[tx][ty][cnt + 1]) {
                 visited[tx][ty][cnt + 1] = visited[x][y][cnt] + 1;
                 q.emplace(tx, ty, cnt + 1);
             }
