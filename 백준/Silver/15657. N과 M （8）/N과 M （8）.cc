@@ -1,36 +1,43 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int N,M;
-vector<int>v;
-int arr[10];
-bool isused[10];
+int N, M;
 
-void rec(int K,int num){
-    if(K==M){
-        for(int i=0;i<M;i++)
-            cout << arr[i]<<' ';
-        cout <<'\n';
+vector<int> arr, v;
+
+void rec(int idx, int cnt) {
+    if (cnt == M) {
+        for (int num : v) {
+            cout << num << ' ';
+        }
+        cout << '\n';
         return;
     }
-    for(int i=num;i<N;i++){
-            arr[K]=v[i];
-            rec(K+1,i);
-        
+
+    for (int i = idx; i < N; i++) {
+        v.push_back(arr[i]);
+        rec(i, cnt + 1);
+        v.pop_back();
     }
 }
 
-int main(){
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
+    cout.tie(nullptr);
+
     cin >> N >> M;
-    for(int i=0;i<N;i++){
-        int num;
-        cin >> num;
-        v.push_back(num);
+
+    arr.resize(N);
+
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
     }
-    sort(v.begin(),v.end());
-    rec(0,0);
+
+    sort(arr.begin(), arr.end());
+
+    rec(0, 0);
+
     return 0;
 }
