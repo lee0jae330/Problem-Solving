@@ -1,55 +1,55 @@
-#include<iostream>
-#include<vector>
-#include<set> 
-#include<algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int N, M;
-int visited[10];
-vector<int>v;
-vector<int>arr;
-set<vector<int>>s;
 
-void backtrack() {
-	if (arr.size() == M) {
-		s.insert(arr);
-		return;
-	}
+vector<int> arr, v;
 
-	for (int i = 0; i < N; i++) {
-		if (!visited[i]) {
-			visited[i] = 1;
-			arr.push_back(v[i]);
-			backtrack();
-			visited[i] = 0;
-			arr.pop_back();
-		}
-	}
+int visited[9];
+
+set<vector<int>> s;
+
+void rec(int cnt) {
+    if (cnt == M) {
+        if (s.find(v) != s.end()) {
+            return;
+        }
+        s.insert(v);
+        for (int num : v) {
+            cout << num << ' ';
+        }
+        cout << '\n';
+
+        return;
+    }
+
+    for (int i = 0; i < N; i++) {
+        if (!visited[i]) {
+            visited[i] = 1;
+            v.push_back(arr[i]);
+            rec(cnt + 1);
+            visited[i] = 0;
+            v.pop_back();
+        }
+    }
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-	cin >> N >> M;
+    cin >> N >> M;
 
-	v.resize(N);
-	for (int i = 0; i < N; i++) {
-		cin >> v[i];
-	}
+    arr.resize(N);
 
-	sort(v.begin(), v.end());
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
 
-	backtrack();
+    sort(arr.begin(), arr.end());
 
-	for (vector<int> vt : s) {
-		for (int num : vt) {
-			cout << num << ' ';
-		}
-		cout <<'\n';
-	}
-
-	return 0;
+    rec(0);
+    return 0;
 }
