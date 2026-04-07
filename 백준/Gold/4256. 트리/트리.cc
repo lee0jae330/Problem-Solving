@@ -6,7 +6,7 @@ int n;
 
 vector<int> preorder, inorder;
 
-map<int, int> preIdx, inIdx;
+map<int, int> inIdx;
 
 pair<int, int> tree[1001];
 int root = -1;
@@ -26,7 +26,7 @@ void buildTree(int dir, int parent, pair<int, int> pre, pair<int, int> in) {
         return;
     }
 
-    int pIdx = preIdx[r], iIdx = inIdx[r];
+    int iIdx = inIdx[r];
 
     pair<int, int> l_pre = {pre.first + 1, pre.first + iIdx - in.first};
     pair<int, int> r_pre = {pre.first + 1 + iIdx - in.first, pre.second};
@@ -69,12 +69,10 @@ int main() {
         inorder.resize(n);
 
         root = -1;
-        preIdx.clear();
         inIdx.clear();
 
         for (int i = 0; i < n; i++) {
             cin >> preorder[i];
-            preIdx[preorder[i]] = i;
         }
 
         for (int i = 0; i < n; i++) {
