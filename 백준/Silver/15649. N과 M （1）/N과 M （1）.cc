@@ -1,40 +1,40 @@
-#include<iostream>
-#include<vector>
-using namespace std;
+#include <bits/stdc++.h>
 
-int arr[10];
+using namespace std;
 
 int N, M;
 
-vector<int>v;
+int visited[9];
 
-void backtrack(int depth) {
-	if (depth == M) {
-		for (int num : v) {
-			cout<< num <<' ';
-		}
-		cout << '\n';
-		return;
-	}
+vector<int> v;
 
-	for (int i = 1; i <= N; i++) {
-		if (!arr[i]) {
-			arr[i] = 1;
-			v.push_back(i);
-			backtrack(depth + 1);
-			arr[i] = 0;
-			v.pop_back();
-		}
-	}
+void rec(int cnt) {
+    if (cnt == M) {
+        for (int n : v) {
+            cout << n << ' ';
+        }
+        cout << '\n';
+        return;
+    }
+
+    for (int i = 1; i <= N; i++) {
+        if (!visited[i]) {
+            visited[i] = 1;
+            v.push_back(i);
+            rec(cnt + 1);
+            visited[i] = 0;
+            v.pop_back();
+        }
+    }
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-	cin >> N >> M;
+    cin >> N >> M;
 
-	backtrack(0);
-	return 0;
+    rec(0);
+    return 0;
 }
