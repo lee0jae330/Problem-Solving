@@ -1,50 +1,51 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<stdio.h>
-#include<vector>
-#include<algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-vector<int>v;
-int arr[10];
-int visited[10] = { 0, };
 int N, M;
 
-void dfs(int count, int num)
-{
-	if (count == M)
-	{
-		for (int i = 0; i < M; i++)
-		{
-			printf("%d ", arr[i]);
-		}
-		printf("\n");
-		return;
-	}
-	int tmp = -1;
-	for (int i = num; i < v.size(); i++)
-	{
-		if (tmp != v[i])
-		{
-			visited[i] = 1;
-			tmp = v[i];
-			arr[count] = v[i];
-			dfs(count + 1, i);
-			visited[i] = 0;
-		}
-	}
+vector<int> arr, v;
+
+int visited[9];
+
+set<vector<int>> s;
+
+void rec(int x, int cnt) {
+    if (cnt == M) {
+        if (s.find(v) != s.end()) {
+            return;
+        }
+        s.insert(v);
+        for (int num : v) {
+            cout << num << ' ';
+        }
+        cout << '\n';
+
+        return;
+    }
+
+    for (int i = x; i < N; i++) {
+        v.push_back(arr[i]);
+        rec(i, cnt + 1);
+        v.pop_back();
+    }
 }
 
-int main(void)
-{
-	scanf("%d %d", &N, &M);
-	for (int i = 0; i < N; i++)
-	{
-		int tmp;
-		scanf("%d", &tmp);
-		v.push_back(tmp);
-	}
-	sort(v.begin(), v.end());
-	dfs(0,0);
-	return 0;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    cin >> N >> M;
+
+    arr.resize(N);
+
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
+
+    sort(arr.begin(), arr.end());
+
+    rec(0, 0);
+    return 0;
 }
