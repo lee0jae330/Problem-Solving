@@ -1,50 +1,47 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-int N,M;
+int N, M;
 
-vector<int>v;
-vector<int>arr;
+vector<int> arr, v;
 
-int visited[9];
+int visited[10001];
 
-void backtrack(int depth) {
-	if (depth == M) {
-		for (int num : v) {
-			cout << num <<' ';
-		}
-		cout <<'\n';
-		return;
-	}
+void rec(int cnt) {
+    if (cnt == M) {
+        for (int num : v) {
+            cout << num << ' ';
+        }
+        cout << '\n';
+        return;
+    }
 
-	for (int i = 0; i < N; i++) {
-		if (!visited[i]) {
-			visited[i] =1;
-			v.push_back(arr[i]);
-			backtrack(depth+1);
-			visited[i]=0;
-			v.pop_back();
-		}
-	}
+    for (int i = 0; i < N; i++) {
+        if (!visited[arr[i]]) {
+            visited[arr[i]] = 1;
+            v.push_back(arr[i]);
+            rec(cnt + 1);
+            v.pop_back();
+            visited[arr[i]] = 0;
+        }
+    }
 }
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
-	cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
 
-	cin >> N >> M;
-	arr.resize(N);
+    cin >> N >> M;
+    arr.resize(N);
+    for (int i = 0; i < N; i++) {
+        cin >> arr[i];
+    }
 
-	for (int i = 0; i < N; i++) {
-		cin >> arr[i];
-	}
+    sort(arr.begin(), arr.end());
 
-	sort(arr.begin(), arr.end());
-	
-	backtrack(0);
-	return 0;
+    rec(0);
+
+    return 0;
 }
