@@ -6,7 +6,7 @@ int n;
 
 vector<int> preorder, inorder;
 
-unordered_map<int, int> inIdx;
+int inIdx[1001];
 
 pair<int, int> tree[1001];
 int root = -1;
@@ -69,7 +69,6 @@ int main() {
         inorder.resize(n);
 
         root = -1;
-        inIdx.clear();
 
         for (int i = 0; i < n; i++) {
             cin >> preorder[i];
