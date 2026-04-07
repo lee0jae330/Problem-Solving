@@ -6,7 +6,7 @@ int n;
 
 vector<int> preorder, inorder;
 
-map<int, int> inIdx;
+unordered_map<int, int> inIdx;
 
 pair<int, int> tree[1001];
 int root = -1;
