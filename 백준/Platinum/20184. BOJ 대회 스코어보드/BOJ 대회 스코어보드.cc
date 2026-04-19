@@ -131,7 +131,7 @@ int getSecondsDifferenceBetweenStartEnd(string startTime, string endTime) {
 }
 
 unordered_map<int, Problem> problem_map;
-unordered_map<string, map<int, UserProblem>> user_log;
+unordered_map<string, unordered_map<int, UserProblem>> user_log;
 vector<User> ranking;
 
 bool compRanking(const User& a, const User& b) {
@@ -189,7 +189,7 @@ int main() {
         cin >> m_id;
         member_set.insert(m_id);
 
-        map<int, UserProblem> tmp;
+        unordered_map<int, UserProblem> tmp;
         for (auto iter = problem_map.begin(); iter != problem_map.end(); iter++) {
             tmp[iter->first] = UserProblem(0, 0, 0, 0, 0, 0, "", "");
         }
@@ -213,7 +213,7 @@ int main() {
             continue;
         }
 
-        map<int, UserProblem>& currentlog = user_log[uid];
+        unordered_map<int, UserProblem>& currentlog = user_log[uid];
 
         UserProblem& currentProblem = currentlog[pid];
         currentProblem.totalTryCount++;  // 전체 시도횟수 증가
