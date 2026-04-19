@@ -130,8 +130,8 @@ int getSecondsDifferenceBetweenStartEnd(string startTime, string endTime) {
     return correctTotalTime - startTotalTime;
 }
 
-map<int, Problem> problem_map;
-map<string, map<int, UserProblem>> user_log;
+unordered_map<int, Problem> problem_map;
+unordered_map<string, map<int, UserProblem>> user_log;
 vector<User> ranking;
 
 bool compRanking(const User& a, const User& b) {
