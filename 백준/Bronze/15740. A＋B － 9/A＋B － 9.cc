@@ -1,0 +1,283 @@
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+
+using namespace std;
+
+void fastio() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+}
+string add(string s1, string s2);
+string sub(string s1, string s2);
+
+
+
+string add(string s1, string s2) {
+	char op1 = s1[0], op2 = s2[0];
+	reverse(s1.begin(), s1.end());
+	reverse(s2.begin(), s2.end());
+	string result = "";
+	if (op1=='-'&&op2=='-') {
+		if (s1.size() < s2.size()) {
+			swap(s1, s2);
+		}
+		int flag = 0;
+		for (int i = 0; i < s2.size()-1; i++) {
+			int c1 = s1[i] - '0', c2 = s2[i] - '0';
+			int a = c1 + c2+flag;
+			int x = a / 10;
+			a %= 10;
+			char n = a + '0';
+			flag = 0;
+			result.push_back(n);
+			if (x)
+				flag = 1;
+			else
+				flag = 0;
+		}
+		for (int i = s2.size()-1; i < s1.size()-1; i++) {
+			int a = s1[i]+flag - '0';
+			int x = a / 10;
+			a %= 10;
+			char n = a + '0';
+			result.push_back(n);
+			flag = 0;
+			if (x)
+				flag = 1;
+			else
+				flag = 0;
+		}
+		if (flag == 1)
+			result.push_back('1');
+		result.push_back('-');
+	}
+	else if (op1 == '-' || op2 == '-') {
+		if (op1 == '-') {
+			s1.pop_back();
+			reverse(s1.begin(), s1.end());
+			reverse(s2.begin(), s2.end());
+			return sub(s2, s1);
+		}
+		else {
+			s2.pop_back();
+			reverse(s1.begin(), s1.end());
+			reverse(s2.begin(), s2.end());
+			return sub(s1, s2);
+		}
+	}
+	else {
+		if (s1.size() < s2.size()) {
+			swap(s1, s2);
+		}
+		int flag = 0;
+		for (int i = 0; i < s2.size(); i++) {
+			int c1 = s1[i] - '0', c2 = s2[i] - '0';
+			int a = c1+c2+flag;
+			int x = a / 10;
+			a %= 10;
+			char n = a + '0';
+			flag = 0;
+			result.push_back(n);
+			if (x) 
+				flag = 1;
+			else 
+				flag = 0;
+		}
+		for (int i = s2.size(); i < s1.size(); i++) {
+			int a = s1[i] +flag- '0';
+			int x = a / 10;
+			a %= 10;
+			char n = a + '0';
+			result.push_back(n);
+			flag = 0;
+			if (x) 
+				flag = 1;
+			else 
+				flag = 0;
+		}
+		if (flag == 1)
+			result.push_back('1');
+	}
+	reverse(result.begin(), result.end());
+	return result;
+}
+
+string sub(string s1, string s2) {
+	char op1 = s1[0], op2 = s2[0];
+	if (op1 == '-' && op2 == '-') {
+		s1 = s1.substr(1, s1.size());
+		s2 = s2.substr(1, s2.size());
+		return sub(s2, s1);
+	}
+	else if (op1 == '-' ||op2 == '-') {
+		if (op1 == '-') {
+			s1 = s1.substr(1, s1.size());
+			string tmp = add(s1, s2);
+			reverse(tmp.begin(), tmp.end());
+			tmp.push_back('-');
+			reverse(tmp.begin(), tmp.end());
+			return tmp;
+		}
+		if (op2=='-'){
+			s2 = s2.substr(1, s2.size());
+			return add(s1, s2);
+		}
+	}
+	else { // 양수 양수
+		string result;
+		reverse(s1.begin(), s1.end());
+		reverse(s2.begin(), s2.end());
+		if (s1.size() < s2.size()) {
+			swap(s1, s2);
+			int flag = 0;
+			for (int i = 0; i < s2.size(); i++) {
+				int n1 = s1[i] - '0', n2 = s2[i] - '0';
+				int sum = n1 - n2-flag;
+				int x = 0;
+				if (sum < 0) {
+					flag = 1;
+					x = 1;
+					sum += 10;
+				}
+				char num = sum + '0';
+				result.push_back(num);
+				if (!x)
+					flag = 0;
+			}
+			for (int i = s2.size(); i < s1.size(); i++) {
+				int n1 = s1[i] - flag - '0';
+				int x = 0;
+				if (n1 < 0) {
+					flag = 1;
+					x = 1;
+					n1 += 10;
+				}
+				char num = n1 + '0';
+				if (i == s1.size() - 1 && n1 == 0)
+					break;
+				result.push_back(num);
+				if (!x)
+					flag = 0;
+			}
+			while (result.size() > 1 && result.back() == '0') {
+				result.pop_back();
+			}
+			result.push_back('-');
+		}
+		else if(s1.size()>s2.size()){
+			int flag = 0;
+			for (int i = 0; i < s2.size(); i++) {
+				int n1 = s1[i] - flag - '0', n2 = s2[i] - '0';
+				int sum = n1 - n2;
+				int x = 0;
+				if (sum < 0) {
+					flag = 1;
+					x = 1;
+					sum += 10;
+				}
+				char num = sum + '0';
+				result.push_back(num);
+				if (!x)
+					flag = 0;
+			}
+			for (int i = s2.size(); i < s1.size(); i++) {
+				int n1 = s1[i] - flag - '0';
+				int x = 0;
+				if (n1 < 0) {
+					flag = 1;
+					x = 1;
+					n1 += 10;
+				}
+				char num = n1 + '0';
+				if (i == s1.size() - 1 && n1 == 0)
+					break;
+				result.push_back(num);
+				if (!x)
+					flag = 0;
+			}
+			while (result.size() > 1 && result.back() == '0') {
+				result.pop_back();
+			}
+		}
+		else {
+			reverse(s1.begin(), s1.end());
+			reverse(s2.begin(), s2.end());
+			int check = 0;
+			for (int i = 0; i < s1.size(); i++) {
+				if (s1[i] < s2[i]) {
+					swap(s1, s2);
+					check = 1;
+					break;
+				}
+				else if (s1[i] > s2[i]) {
+					check = -1;
+					break;
+				}
+			}
+			reverse(s1.begin(), s1.end());
+			reverse(s2.begin(), s2.end());
+			if (check==1) { // 111 - 222
+				int flag = 0;
+				for (int i = 0; i < s2.size(); i++) {
+					int n1 = s1[i] - flag - '0', n2 = s2[i] - '0';
+					int sum = n1 - n2;
+					int x = 0;
+					if (sum < 0) {
+						flag = 1;
+						x = 1;
+						sum += 10;
+					}
+					char num = sum + '0';
+					if (i == s2.size() - 1 && sum == 0)
+						break;
+					result.push_back(num);
+					if (!x)
+						flag = 0;
+				}
+				while (result.back() == '0')
+					result.pop_back();
+				result.push_back('-');
+			} 
+			else if (check == -1) { // 222 - 111
+				int flag = 0;
+				for (int i = 0; i < s2.size(); i++) {
+					int n1 = s1[i] - flag - '0', n2 = s2[i] - '0';
+					int sum = n1 - n2;
+					int x = 0;
+					if (sum < 0) {
+						flag = 1;
+						x = 1;
+						sum += 10;
+					}
+					char num = sum + '0';
+					if (i == s2.size() - 1 && sum == 0)
+						break;
+					result.push_back(num);
+					if (!x)
+						flag = 0;
+				}
+				while (result.back() == '0')
+					result.pop_back();
+			}
+			else { /// 11 -11
+				result.push_back('0');
+			}
+		}
+
+		reverse(result.begin(), result.end());
+		return result;
+	}
+}
+
+
+
+int main(void) {
+	fastio();
+	string a, b;
+	cin >> a >> b;
+	cout << add(a, b) << "\n";
+	return 0;
+}
